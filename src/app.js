@@ -33,15 +33,38 @@ app.use(helmet({
 }));
 
 // CORS configuration [8]
+// const corsOptions = {
+//   origin: process.env.NODE_ENV === 'production' 
+//     ? [process.env.FRONTEND_URL, 'https://your-frontend-domain.vercel.app']
+//     : ['http://localhost:3000', 'http://127.0.0.1:3000'],
+//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization'],
+//   credentials: true,
+//   maxAge: 86400 // 24 hours
+// };
+// CORS configuration - FIXED VERSION
+// CORS configuration - Updated for production
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? [process.env.FRONTEND_URL, 'https://your-frontend-domain.vercel.app']
-    : ['http://localhost:3000', 'http://127.0.0.1:3000'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: [
+    'https://notesflow-pro.vercel.app', // Your actual frontend
+    'http://localhost:3000', // Local development
+    'http://127.0.0.1:3000' // Alternative localhost
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'X-Requested-With',
+    'Accept',
+    'Origin'
+  ],
   credentials: true,
-  maxAge: 86400 // 24 hours
+  maxAge: 86400,
+  optionsSuccessStatus: 200
 };
+
+app.use(cors(corsOptions));
+
 app.use(cors(corsOptions));
 
 // Rate limiting [20]
